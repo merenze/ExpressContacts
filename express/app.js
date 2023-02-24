@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
+var contactsRouter = require('./routes/contacts');
 var usersRouter = require('./routes/users');
 
 require('dotenv').config();
@@ -30,6 +31,7 @@ app.use('/bootflat', express.static(`${__dirname}/node_modules/bootflat/bootflat
 
 // Other routes
 app.use('/', indexRouter);
+app.use('/contacts', contactsRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

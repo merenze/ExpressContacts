@@ -14,6 +14,10 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+// Prettify for production
+if (app.get('env') === 'development') {
+  app.locals.pretty = true;
+}
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -21,6 +25,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Static routes
+app.use('/bootflat', express.static(`${__dirname}/node_modules/bootflat/bootflat`));
+
+// Other routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 

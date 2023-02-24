@@ -1,18 +1,19 @@
 doctype html
 
 -
-  var reactSrc = process.env === 'development'
+  // Set source of React script includes based on NODE_ENV
+  var reactSrc = process.env.NODE_ENV === 'development'
   ? 'https://unpkg.com/react@18/umd/react.development.js'
   : 'https://unpkg.com/react@18/umd/react.production.min.js'
   
-  var reactDomSrc = process.env === 'development'
+  var reactDomSrc = process.env.NODE_ENV === 'development'
   ? 'https://unpkg.com/react-dom@18/umd/react-dom.development.js'
   : 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js'
 
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='bootflat/css/bootflat.min.css')
     script(src=reactSrc)
     script(src=reactDomSrc)
 

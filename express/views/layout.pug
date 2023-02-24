@@ -1,7 +1,20 @@
 doctype html
+
+-
+  var reactSrc = process.env === 'development'
+  ? 'https://unpkg.com/react@18/umd/react.development.js'
+  : 'https://unpkg.com/react@18/umd/react.production.min.js'
+  
+  var reactDomSrc = process.env === 'development'
+  ? 'https://unpkg.com/react-dom@18/umd/react-dom.development.js'
+  : 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js'
+
 html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src=reactSrc)
+    script(src=reactDomSrc)
+
   body
     block content

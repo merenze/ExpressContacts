@@ -1,17 +1,19 @@
 // webpack.config.js
 const path = require('path');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
-    "contacts/index": "./src/main/contacts/index.js",
+    "javascripts/contacts/index": "./src/main/contacts/index.js",
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "public/javascripts"),
+    path: path.resolve(__dirname, "public"),
   },
   module: {
     rules: [
+      // Babel
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -22,6 +24,7 @@ module.exports = {
           },
         },
       },
+      // CSS
       {
         test: /\.css$/,
         include: [
@@ -29,17 +32,33 @@ module.exports = {
           path.resolve(__dirname, "node_modules/bootstrap/"),
         ],
         use: ["style-loader", "css-loader"],
+        sideEffects: true,
       },
+      // SCSS
       {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: ["file-loader"],
+        test: /\.scss$/,
+        include: [path.resolve(__dirname, "styles")],
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              failOnError: true,
+              sourceMap: true,
+            },
+          },
+        ],
+        sideEffects: true,
       },
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      APP_URL: JSON.stringify(process.env.APP_URL),
+    // Transpile SCSS to CSS
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
     }),
+    // Environent variable replacement in client scripts
     new webpack.EnvironmentPlugin({
       NODE_ENV: "production",
       APP_URL: "http://localhost:3000",

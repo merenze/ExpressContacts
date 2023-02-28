@@ -31,8 +31,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Static routes
-app.use('/bootflat', express.static(`${__dirname}/node_modules/bootflat/bootflat`));
-app.use('/scripts', express.static(`${__dirname}/public/javascripts/`));
+app.use('/scripts', express.static(`${__dirname}/public/scripts/`));
+app.use('/styles', express.static(`${__dirname}/public/styles/`));
 
 // Page routes
 app.use('/', indexRouter);

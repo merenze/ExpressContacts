@@ -3,7 +3,10 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/main.css')
+    link(rel='stylesheet', href='/styles/main.css')
 
   body
-    block content
+    div(id='navbar')
+    script(type='text/javascript' src='/scripts/navbar.js')
+    div(id='container')
+      block content

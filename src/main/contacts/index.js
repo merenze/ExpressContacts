@@ -6,7 +6,7 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 
 const paginatorRoot = createRoot(document.getElementById('paginator'));
 
-fetch(`${process.env.APP_URL}/api/contacts`, {
+fetch(`/api/contacts`, {
         headers: {
             'Accept': 'application/json'
         }

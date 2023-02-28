@@ -18,12 +18,21 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-              presets: [
-                  "@babel/preset-env",
-                  "@babel/preset-react"
-              ],
+            presets: ["@babel/preset-env", "@babel/preset-react"],
           },
         },
+      },
+      {
+        test: /\.css$/,
+        include: [
+          path.resolve(__dirname, "src"),
+          path.resolve(__dirname, "node_modules/bootstrap/"),
+        ],
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: ["file-loader"],
       },
     ],
   },
@@ -32,7 +41,7 @@ module.exports = {
       APP_URL: JSON.stringify(process.env.APP_URL),
     }),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'production',
+      NODE_ENV: "production",
       APP_URL: "http://localhost:3000",
       DEBUG: false,
     }),

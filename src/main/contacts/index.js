@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from "react-dom/client";
 import PaginatorTable from "../../components/paginator/paginator-table";
+import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 
 const paginatorRoot = createRoot(document.getElementById('paginator'));
 

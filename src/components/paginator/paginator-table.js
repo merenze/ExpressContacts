@@ -1,3 +1,4 @@
+import React from 'react';
 import PaginatorRow from './paginator-row';
 
 export default function PaginatorTable({ contacts }) {

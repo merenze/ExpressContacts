@@ -1,11 +1,20 @@
-import PaginatorTable from '../../components/paginator/paginator-table';
+import React from 'react';
+import { createRoot } from "react-dom/client";
+import PaginatorTable from "../../components/paginator/paginator-table";
 
-fetch("#{process.env.APP_URL + '/api/contacts'}")
+const paginatorRoot = createRoot(document.getElementById('paginator'));
+
+fetch(`${process.env.APP_URL}/api/contacts`, {
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
     .then(response => {
         console.log(response);
-        response.json();
+        return response.json();
     })
-    .then(data => ReactDOM.render(
-        React.createElement(PaginatorTable, { contacts: data }),
-        document.getElementById("paginator")
-    ));
+    .then(data => {
+        console.log(data);
+        paginatorRoot.render(<PaginatorTable contacts={data} />)
+    })
+    .catch(console.log);

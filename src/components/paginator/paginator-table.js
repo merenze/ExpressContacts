@@ -4,7 +4,7 @@ import PaginatorRow from './paginator-row';
 export default function PaginatorTable({ contacts }) {
   return (
     <table class="table">
-      <thead>
+      <thead class="thead-light">
         <tr>
           <th>Last Name</th>
           <th>First Name</th>

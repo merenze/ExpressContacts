@@ -8,7 +8,6 @@ export default function ArrayElement({
   const [state, setState] = useState({ components: [] });
 
   const addComponent = () => {
-    console.log("Click!");
     setState((prevState) => ({
       components: [
         ...prevState.components,

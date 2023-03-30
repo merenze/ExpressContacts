@@ -1,17 +1,18 @@
 import React from "React";
 
-const cancelForm = (event) => {
-  console.log("Form cancelled.");
-  // TODO
-};
-
-const SubmitButton = ({formId}) => {
+/**
+ * Subcomponent to submit the form.
+ * @param {*} props 
+ * @returns SubmitButton component.
+ */
+const SubmitButton = ({ handler }) => {
   return (
-    <div class="col">
+    <div className="col">
       <button
         id="input-submit"
         type="button"
-        class="btn btn-primary form-control"
+        className="btn btn-primary form-control"
+        onClick={handler}
       >
         Submit
       </button>
@@ -19,38 +20,43 @@ const SubmitButton = ({formId}) => {
   );
 };
 
-const CancelButton = ({ cancel }) => {
-  if (typeof cancel == "undefined") return "";
-  if (typeof cancel == "string")
-    cancel = {
-      name: "Cancel",
-      route: "cancel",
-    };
+/**
+ * Subcomponent to cancel the form.
+ * @param {*} props 
+ * @returns CancelButton component.
+ */
+const CancelButton = ({ route }) => {
+  if (typeof route == "undefined") {
+    return "";
+  }
+  if (typeof route !== "string") {
+    throw "Cancel route must be a string"
+  }
+
   return (
-    <div class="col">
+    <div className="col">
       <a
         id="input-cancel"
         className="btn btn-danger form-control"
-        href={cancel.route}
+        href={route}
       >
-        {cancel.name}
+        Cancel
       </a>
     </div>
   );
 };
 
-export default function SubmitElement({ name = "Submit", formId, cancel }) {
-  if (typeof cancel === "string") {
-    cancel = {
-      name: "Cancel",
-      route: cancel,
-    };
-  }
+/**
+ * Default export.
+ * @param {*} param0 
+ * @returns SubmitElement
+ */
+export default function SubmitElement({ handler, cancelRoute }) {
 
   return (
     <div className="row form-group" id="form-group-submit">
-          <SubmitButton formId={formId} />
-          <CancelButton cancel={cancel} />
+          <SubmitButton handler={handler} />
+          <CancelButton route={cancelRoute} />
     </div>
   );
 }

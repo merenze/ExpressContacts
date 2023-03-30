@@ -1,37 +1,87 @@
 import React from "react";
 import { useState } from "react";
 
-const SelectTypeElement = ({ id }) => {
+const validateIndex = (index) => {
+  if (typeof index !== "number") throw "index must be a number";
+};
+
+/**
+ * Update the phone number's type and write through to the ContactForm.
+ * @param {object} event 
+ * @param {number} index Updated component's index in the array.
+ * @param {object} state State of the PhoneForm.
+ * @param {function} setState SetState of the PhoneForm.
+ * @param {function} updateParentArray Function to update the parent array with the new information.
+ */
+const updateType = (event, index, state, setState, updateParentArray) => {
+  console.log(`Setting phone ${index}'s type to ${event.target.value}`);
+  const nextState = {
+    ...state,
+    type: event.target.value
+  };
+  // Set the phone form's state
+  setState(nextState);
+  // Set the parent's state
+  updateParentArray(index, nextState);
+};
+
+/**
+ * Subcomponent for the phone number's type field.
+ * @param {object} props 
+ * @returns SelectTypeElement component.
+ */
+const SelectTypeElement = ({ index, state, setState, updateParentArray }) => {
   return (
-    <select className='form-control' id={`${id}-type`}>
+    <select
+      name="type"
+      className="form-control"
+      onChange={(event) => updateType(event, index, state, setState, updateParentArray)}
+    >
       <option value="mobile">Mobile</option>
-      <option value="cell">Home</option>
-      <option value="Work">Work</option>
+      <option value="home">Home</option>
+      <option value="work">Work</option>
     </select>
   );
 };
 
-const PhoneNumberElement = ({ id }) => {
+/**
+ * Subcomponent for the phone number's number field.
+ * @returns PhoneNumberElement component.
+ */
+const PhoneNumberElement = () => {
   // Note that this is a text field, not a number field.
   // There are too many valid phone formats for me to validate this.
-  // TODO: Possibly will add validation in the future.
-  return <input type="text" id={`${id}-number`} className="form-control" />;
+  // TODO: Possibly add validation in the future.
+  return <input name="number" type="text" className="form-control" />;
 };
 
-export default function PhoneForm({ index }) {
-  const [state, setState] = useState({ index: index });
-  const id = `form-phone-${state.index}`;
+/**
+ * Default export.
+ * @param {object} props 
+ * @returns PhoneForm subform for an ArrayElement.
+ */
+export default function PhoneForm({ index, updateParentArray }) {
+  // TODO update this more efficiently. useReducer?
+  validateIndex(index);
+  
+  const [state, setState] = useState({
+    type: "mobile",
+    number: "",
+  });
 
   return (
-    <React.Fragment>
-      <div class="row">
-        <div className="col-2">
-          <SelectTypeElement id={id} />
-        </div>
-        <div className="col">
-          <PhoneNumberElement id={id} />
-        </div>
+    <div className="row">
+      <div className="col-2">
+        <SelectTypeElement
+          index={index}
+          state={state}
+          setState={setState}
+          updateParentArray={updateParentArray}
+        />
       </div>
-    </React.Fragment>
+      <div className="col">
+        <PhoneNumberElement />
+      </div>
+    </div>
   );
 }

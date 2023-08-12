@@ -1,3 +1,4 @@
+// phone-form.js
 import React from "react";
 import { useState } from "react";
 
@@ -14,15 +15,14 @@ const validateIndex = (index) => {
  * @param {function} updateParentArray Function to update the parent array with the new information.
  */
 const updateType = (event, index, state, setState, updateParentArray) => {
-  console.log(`Setting phone ${index}'s type to ${event.target.value}`);
-  const nextState = {
+  const value = {
     ...state,
     type: event.target.value
   };
   // Set the phone form's state
-  setState(nextState);
+  setState(value);
   // Set the parent's state
-  updateParentArray(index, nextState);
+  updateParentArray(index, value);
 };
 
 /**

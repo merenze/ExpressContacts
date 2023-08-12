@@ -1,3 +1,4 @@
+// contact-form.js 
 import React from "react";
 import { useRef, useState } from "react";
 
@@ -28,12 +29,10 @@ const getSubmitForm = (form, state) => (event) => {
 /**
  * 
  * @param {object} state State of the ContactForm component.
- * @param {*} setState SetState of the ContactForm component.
- * @returns 
+ * @param {function} setState SetState of the ContactForm component.
+ * @returns A function to set the form's phone array to the passed array.
  */
-const getUpdatePhoneArray = (state, setState) => (phones) => {
-  console.log('Updating Phone array');
-  console.log(phones);
+const getSetPhones = (state, setState) => (phones) => {
   setState(prevState => ({
     ...prevState,
     phones: phones,
@@ -59,7 +58,7 @@ export default function ContactForm() {
         <ArrayElement
           label="Phone"
           componentType={PhoneForm}
-          updateParent={getUpdatePhoneArray(state, setState)}
+          updateParent={getSetPhones(state, setState)}
         />
       </div>
       <div className="row">

@@ -1,3 +1,4 @@
+// array-element.js
 import React, { useState } from "react";
 
 /**
@@ -7,16 +8,17 @@ import React, { useState } from "react";
  * @returns Function to update the values.
  */
 const getUpdateValues = (state, setState, updateParent) => (index, value) => {
-  console.log(`Updating ${index} with:`);
-  console.log(value);
   // Update the array
-  const values = [...state.values];
-  values[index] = value;
+  // TODO:
+  // Bug: This array is, for some reason, containing only the updated phone.
+  // I would expect it to contain all the (not updated) phones,
+  // until the assigment at values[index] = values.
+  const values = state.values.map((phone, i) => i === index ? value : phone);
   setState(prevState => ({
     ...prevState,
-    values: values
+    values: values,
   }));
-  // Update the parent
+  // Write through
   updateParent(values);
 };
 
@@ -24,24 +26,34 @@ const getUpdateValues = (state, setState, updateParent) => (index, value) => {
  * Add a child component to this array.
  * @param {object} state ArrayElement's state.
  * @param {object} setState ArrayElement's setState.
+ * @param {object} componentType Component type stored in this ArrayElement.
+ * @param {function} updateValues Function to update the values stored in this array (passed to child component).
+ * @param {function} updateParent Function to write the values through to the parent form.
  */
-const addComponent = (state, setState, componentType, updateParent) => {
+const addComponent = (state, setState, componentType, updateValues, updateParent) => {
+  const values = [
+    ...state.values,
+    {
+        // TODO set default without magic values
+      type: "mobile",
+      number: ""
+    }
+  ];
   // Set the Array
-  setState({
+  setState(prevState => ({
     components: [
-      ...state.components,
+      ...prevState.components,
       React.createElement(componentType, {
-        key: state.components.length,
-        index: state.components.length,
-        updateParentArray: getUpdateValues(state, setState, updateParent),
+        key: prevState.components.length,
+        index: prevState.components.length,
+        updateParentArray: updateValues,
       }),
     ],
-    values: [
-      ...state.values,
-      {},
-    ],
-  });
-}
+    values: values,
+  }));
+  // Write through
+  updateParent(values);
+};
 
 /**
  * Remove a child component from this array.
@@ -50,10 +62,10 @@ const addComponent = (state, setState, componentType, updateParent) => {
  * @param {number} index Index of the component to remove.
  */
 const removeComponent = (state, setState, index) => {
-  setState({
-    components: state.components.filter((component, i) => i !== index),
-    values: state.values.filter((value, i) => i !== index),
-  });
+  setState(prevState => ({
+    components: prevState.components.filter((component, i) => i !== index),
+    values: prevState.values.filter((value, i) => i !== index),
+  }));
 };
 
 /**
@@ -84,6 +96,8 @@ export default function ArrayElement({ label, componentType, updateParent }) {
     components: [],
     values: [],
   });
+
+  const updateValues = getUpdateValues(state, setState, updateParent);
 
   return (
     <React.Fragment>
@@ -116,7 +130,7 @@ export default function ArrayElement({ label, componentType, updateParent }) {
         <div className="col">
           <button
             type="button"
-            onClick={() => addComponent(state, setState, componentType, updateParent)}
+            onClick={() => addComponent(state, setState, componentType, updateValues, updateParent)}
             className="btn btn-primary form-control"
           >
             Add {label}
